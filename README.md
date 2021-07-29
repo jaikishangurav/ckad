@@ -9,6 +9,24 @@ CKAD preparation material
 5. The control plane is set of APIs and software thats k8s users interact with.
 6. APIs and software are referred to as master components. 
 
+![Diagram of Kubernetes cluster with all components tied together!](https://d33wubrfki0l68.cloudfront.net/2475489eaf20163ec0f54ddc1d92aa8d4c87c96b/e7c81/images/docs/components-of-kubernetes.svg)
+
+### Kubernetes Components
+#### Control Plane:  
+The container orchestration layer that exposes the API and interfaces to define, deploy, and manage the lifecycle of containers. The control plane manages the worker nodes and the Pods in the cluster. In production environments, the control plane usually runs across multiple computers and a cluster usually runs multiple nodes, providing fault-tolerance and high availability.
+
+#### Control Plane Components
+1. etcd: The primary data store of all cluster state  
+1. kube-apiserver: The REST API server for managing the Kubernetes cluster
+1. kube-controller-manager: Manager of all of the controllers in the cluster that monitor and change the cluster state when necessary  
+1. cloud-controller-manager: A Kubernetes control plane component that embeds cloud-specific control logic. The cloud controller manager lets you link your cluster into your cloud provider's API, and separates out the components that interact with that cloud platform from components that only interact with your cluster.
+1. kube-scheduler: Control plane process which assigns Pods to Nodes 
+
+#### Node Components
+1. kubelet: An agent that runs on each node in the cluster. It makes sure that containers are running in a Pod.
+1. kube-proxy: kube-proxy is a network proxy that runs on each node in your cluster, implementing part of the Kubernetes Service concept. kube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods from network sessions inside or outside of your cluster.
+ 
+
 ### Pods
 1. Pods are basic building block.
 2. One or more containers in a Pod.
@@ -237,6 +255,16 @@ e.g. Calico, Romana
 1. Service accounts are compatible with Role Based Access Control(RBAC).
 1. Pods have a token mounted on a volume that can be used to authenticate requests.
 1. Default service account token has no additional permissions than an unauthorised user.
+
+### Cheat Sheet  
+`
+1. Enable autocompletion for the Kubernetes cluster manager utility kubectl:  
+source <(kubectl completion bash)  
+With completions, you can press tab twice to get a list of valid ways to complete any of the kubectl commands.  
+
+
+
+`
 
 
 
