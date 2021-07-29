@@ -257,14 +257,13 @@ e.g. Calico, Romana
 1. Default service account token has no additional permissions than an unauthorised user.
 
 ### Cheat Sheet  
-```
-1. Enable autocompletion for the Kubernetes cluster manager utility kubectl:  
-source <(kubectl completion bash)  
+
+Enable autocompletion for the Kubernetes cluster manager utility kubectl:  
+`source <(kubectl completion bash)`  
 With completions, you can press tab twice to get a list of valid ways to complete any of the kubectl commands.  
 
 
 
-```
 
 
 
