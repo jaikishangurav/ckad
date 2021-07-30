@@ -259,7 +259,9 @@ e.g. Calico, Romana
 ### Cheat Sheet  
 
 Enable autocompletion for the Kubernetes cluster manager utility kubectl:  
-`source <(kubectl completion bash)`  
+```
+source <(kubectl completion bash)
+```  
 With completions, you can press tab twice to get a list of valid ways to complete any of the kubectl commands.  
 
 
