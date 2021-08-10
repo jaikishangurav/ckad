@@ -8,8 +8,11 @@
 
 **Solution**
 
-    Create a Pod in the cre Namespace with the following configuration: the Pod is named basic, the Pod uses the nginx:stable-alpine-perl image for its only container, restart the Pod only OnFailure, ensure port 80 is open to TCP traffic
-    > kubectl run -n cre --image=nginx:stable-alpine-perl --restart=OnFailure --port=80 basic
+Create a Pod in the cre Namespace with the following configuration: the Pod is named basic, the Pod uses the nginx:stable-alpine-perl image for its only container, restart the Pod only OnFailure, ensure port 80 is open to TCP traffic
+
+```
+kubectl run -n cre --image=nginx:stable-alpine-perl --restart=OnFailure --port=80 basic
+```
 
 **Q. Create a new Namespace named workers and within it launch a Pod with the following configuration:**
 
@@ -23,11 +26,11 @@
     
 **Solution**
 
-    > kubectl create namespace workers
-    > kubectl run -n workers worker --image=busybox --restart=Never --labels="company=acme,speed=fast,type=async" -- /bin/sh -c "echo working... && sleep 3600"
-    # Create a new Namespace named workers and then create a Pod within it using the following configuration: the Pod is named worker, the Pod uses the busybox image for its only container, the Pod has the labels company=acme, speed=fast, type=async, the Pod runs the command /bin/sh -c "echo working... && sleep 3600"
-    kubectl create ns workers
-    kubectl run -n workers worker --image=busybox --labels="company=acme,speed=fast,type=async" -- /bin/sh -c "echo working... && sleep 3600"
+Create a new Namespace named workers and then create a Pod within it using the following configuration: the Pod is named worker, the Pod uses the busybox image for its only container, the Pod has the labels company=acme, speed=fast, type=async, the Pod runs the command /bin/sh -c "echo working... && sleep 3600"
+```
+kubectl create ns workers
+kubectl run -n workers worker --image=busybox --labels="company=acme,speed=fast,type=async" -- /bin/sh -c "echo working... && sleep 3600"
+```
 
 **Q. Update the Label on a Running Pod**
 
@@ -35,9 +38,11 @@
     
 **Solution**
 
-    >kubectl label --overwrite pods compiler language=python -n=ca200
-    # Edit and save pod - this will update the pod without restarting it
-    kubectl edit -n ca200 compiler
+```
+kubectl label --overwrite pods compiler language=python -n=ca200
+# Edit and save pod - this will update the pod without restarting it
+kubectl edit -n ca200 compiler
+```
 
 **Q. Get the Pod IP Address using JSONPath**
 
@@ -45,15 +50,17 @@
     
 **Solution**
 
-    >kubectl get pods ip-podzoid  -n ca300 -o jsonpath="{.status.podIP}"
-    # Step 1 - examine the json structure for the pod in question, in particular look to see where the pod assigned ip address is located - it is in the .status.podIP field
-    kubectl get pods -n ca300 ip-podzoid -o json
+```
+kubectl get pods ip-podzoid  -n ca300 -o jsonpath="{.status.podIP}"
+# Step 1 - examine the json structure for the pod in question, in particular look to see where the pod assigned ip address is located - it is in the .status.podIP field
+kubectl get pods -n ca300 ip-podzoid -o json
     
-    # Step 2 - using the information from the previous step, build out the actual jsonpath based expression to return only the pod ip address
-    kubectl get pods -n ca300 ip-podzoid -o jsonpath={.status.podIP}
+# Step 2 - using the information from the previous step, build out the actual jsonpath based expression to return only the pod ip address
+kubectl get pods -n ca300 ip-podzoid -o jsonpath={.status.podIP}
     
-    # Step 3 - write out the working kubectl command to the file /home/ubuntu/podip.sh
-    echo "kubectl get pods -n ca300 ip-podzoid -o jsonpath={.status.podIP}" > /home/ubuntu/podip.sh
+# Step 3 - write out the working kubectl command to the file /home/ubuntu/podip.sh
+echo "kubectl get pods -n ca300 ip-podzoid -o jsonpath={.status.podIP}" > /home/ubuntu/podip.sh
+```
 
 **Q. Generate Pod YAML Manifest File**
 
@@ -70,10 +77,12 @@
     
 **Solution**
 
-    >kubectl run -n core-system --image=busybox --restart=Always --labels="platform=prod" --env="system=borg" -- /bin/sh -c "echo borg.running... && sleep 3600" borg1 --dry-run=client -o yaml -f /home/ubuntu/pod.yaml
-    >kubectl get pod borg1 -n core-system -o yaml -f /home/ubuntu/pod.yaml
-    # Use kubectl run command specifically with the --dry-run=client and -o yaml parameters - and then redirect the output to file
-    kubectl run -n core-system borg1 --image=busybox --restart=Always --labels="platform=prod" --env="system=borg" -o yaml --dry-run=client -- /bin/sh -c "echo borg.running... && sleep 3600" > /home/ubuntu/pod.yaml
+```
+kubectl run -n core-system --image=busybox --restart=Always --labels="platform=prod" --env="system=borg" -- /bin/sh -c "echo borg.running... && sleep 3600" borg1 --dry-run=client -o yaml -f /home/ubuntu/pod.yaml
+kubectl get pod borg1 -n core-system -o yaml -f /home/ubuntu/pod.yaml
+# Use kubectl run command specifically with the --dry-run=client and -o yaml parameters - and then redirect the output to file
+kubectl run -n core-system borg1 --image=busybox --restart=Always --labels="platform=prod" --env="system=borg" -o yaml --dry-run=client -- /bin/sh -c "echo borg.running... && sleep 3600" > /home/ubuntu/pod.yaml
+```
 
 **Q. Launch Pod and Configure it's Termination Shutdown Time**
 
@@ -85,15 +94,15 @@
     Ensure the pod is configured to terminate immediately when requested to do so by configuring it's terminationGracePeriodSeconds setting.
     
 **Solution**
-
-    > kubectl run web-zeroshutdown -n=sys2 --image=nginx --restart=Always --grace-period=0
-    # Step 1 - Use kubectl run command specifically with the --dry-run=client and -o yaml parameters - and then redirect the output to file
-    kubectl run web-zeroshutdown -n sys2 --image=nginx --restart=Never --port=80 -o yaml --dry-run=client > pod-zeroshutdown.yaml
+```
+kubectl run web-zeroshutdown -n=sys2 --image=nginx --restart=Always --grace-period=0
+# Step 1 - Use kubectl run command specifically with the --dry-run=client and -o yaml parameters - and then redirect the output to file
+kubectl run web-zeroshutdown -n sys2 --image=nginx --restart=Never --port=80 -o yaml --dry-run=client > pod-zeroshutdown.yaml
     
-    # Step 2 - use kubectl explain pod.spec to check the syntax and how the terminationGracePeriodSeconds attribute should be configured
-    kubectl explain pod.spec
+# Step 2 - use kubectl explain pod.spec to check the syntax and how the terminationGracePeriodSeconds attribute should be configured
+kubectl explain pod.spec
     
-    # Step 3 - use vim and edit and update the pod-zeroshutdown.yaml file, adding in -> terminationGracePeriodSeconds: 0
+# Step 3 - use vim and edit and update the pod-zeroshutdown.yaml file, adding in -> terminationGracePeriodSeconds: 0
     apiVersion: v1
     kind: Pod
     metadata:
@@ -114,5 +123,6 @@
        restartPolicy: Never
     status: {}
     
-    # Step 4 - use kubectl apply -f pod-zeroshutdown.yaml to create the pod resource within the cluster
-    kubectl apply -f pod-zeroshutdown.yaml
+# Step 4 - use kubectl apply -f pod-zeroshutdown.yaml to create the pod resource within the cluster
+kubectl apply -f pod-zeroshutdown.yaml
+```
