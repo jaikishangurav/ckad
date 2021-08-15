@@ -175,3 +175,71 @@ Create a new ConfigMap using the kubectl create command with the required key/va
 ```
 kubectl create configmap config1 -n ca200 --from-literal COLOUR=red --from-literal SPEED=fast
 ```
+
+Next, generate a Pod manifest template specifying as many parameters possible when using kubectl run - redirect and save the output into a file named pod.yaml
+```
+(kubectl run -n ca200 redfastcar --image=busybox --dry-run=client -o yaml -- /bin/sh -c "env | grep -E 'COLOUR|SPEED'; sleep 3600") > pod.yaml
+```
+
+pod.yaml contains:
+```YAML
+apiVersion: v1
+kind: Pod
+metadata:
+ creationTimestamp: null
+ labels:
+   run: car1
+ name: car1
+ namespace: ca200
+spec:
+ containers:
+ - args:
+   - /bin/sh
+   - -c
+   - env | grep -E 'COLOUR|SPEED'; sleep 3600
+   image: busybox
+   name: redfastcar
+   resources: {}
+ dnsPolicy: ClusterFirst
+ restartPolicy: Always
+status: {}
+```
+
+Using vim open up and modify the pod.yaml template, add in the required config map environment configuration, finally save the updated pod.yaml manifest:
+```YAML
+apiVersion: v1
+kind: Pod
+metadata:
+ creationTimestamp: null
+ labels:
+   run: car1
+ name: car1
+ namespace: ca200
+spec:
+ containers:
+ - args:
+   - /bin/sh
+   - -c
+   - env | grep -E 'COLOUR|SPEED'; sleep 3600
+   image: busybox
+   name: redfastcar
+   resources: {}
+   envFrom:
+   - configMapRef:
+       name: config1 
+ dnsPolicy: ClusterFirst
+ restartPolicy: Always
+status: {}
+```
+
+Using kubectl apply - create the pod resource within the cluster
+```
+kubectl apply -f pod.yaml
+```
+
+Confirm that the pod has launched successfully with the ConfigMap managed env vars
+```
+kubectl logs -n ca200 redfastcar 
+COLOUR=red
+SPEED=fast
+```
