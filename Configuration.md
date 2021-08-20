@@ -1,8 +1,8 @@
 **Q.Create and Consume a Secret using a Volume**
 
-    Create a secret named app-secret in the yqe Namespace that stores key-value pair of password=abnaoieb2073xsj
+Create a secret named app-secret in the yqe Namespace that stores key-value pair of password=abnaoieb2073xsj
     
-    Create a Pod that consumes the app-secret Secret using a Volume that mounts the Secret in the /etc/app directory. The Pod should be named app and run a memcached container.
+Create a Pod that consumes the app-secret Secret using a Volume that mounts the Secret in the /etc/app directory. The Pod should be named app and run a memcached container.
 
 **Solution**    
 
@@ -40,7 +40,7 @@ kubectl create -f secret-pod.yaml -n yqe
 
 **Q. Update Deployment with New Service Account**
 
-    A Deployment named secapp has been created in the app namespace and currently uses the default ServiceAccount. Create a new ServiceAccount named secure-svc in the app namespace and then use it within the existing secapp Deployment, ensuring that the replicas now run with it.
+A Deployment named secapp has been created in the app namespace and currently uses the default ServiceAccount. Create a new ServiceAccount named secure-svc in the app namespace and then use it within the existing secapp Deployment, ensuring that the replicas now run with it.
     
 **Solution**
 
@@ -64,7 +64,7 @@ kubectl patch deployment -n app secapp --patch "$(cat patch.yaml)"
 
 **Q. Pod Security Context Configuration**
 
-    Create a pod named secpod in the dnn namespace which includes 2 containers named c1 and c2. Both containers must be configured to run the bash image, and should execute the command /usr/local/bin/bash -c sleep 3600. Container c1 should run as user ID 1000, and container c2 should run as user ID 2000. Both containers should use file system group ID 3000.
+Create a pod named secpod in the dnn namespace which includes 2 containers named c1 and c2. Both containers must be configured to run the bash image, and should execute the command /usr/local/bin/bash -c sleep 3600. Container c1 should run as user ID 1000, and container c2 should run as user ID 2000. Both containers should use file system group ID 3000.
     
 **Solution**
 
@@ -153,7 +153,8 @@ uid=2000 gid=0(root) groups=3000
 ```
 
 **Q. Pod Resource Constraints**
-    Create a new Pod named web1 in the ca100 namespace using the nginx image. Ensure that it has the following 2 labels env=prod and type=processor. Configure it with a memory request of 100Mi and a memory limit at 200Mi. Expose the pod on port 80.
+
+Create a new Pod named web1 in the ca100 namespace using the nginx image. Ensure that it has the following 2 labels env=prod and type=processor. Configure it with a memory request of 100Mi and a memory limit at 200Mi. Expose the pod on port 80.
     
 **Solution**
 
@@ -163,11 +164,12 @@ kubectl run -n ca100 --image=nginx web1 -l env=prod -l type=processor --requests
 ```
 
 **Q.Create a Pod with Config Map Environment Vars**
-    Create a new ConfigMap named config1 in the ca200 namespace. The new ConfigMap should be created with the following 2 key/value pairs:
+
+Create a new ConfigMap named config1 in the ca200 namespace. The new ConfigMap should be created with the following 2 key/value pairs:
     
-    COLOUR=red
-    SPEED=fast
-    Launch a new Pod named redfastcar in the same ca200 namespace, using the image busybox. The redfastcar pod should expose the previous ConfigMap settings as environment variables inside the container. Configure the redfastcar pod to run the command:  /bin/sh -c "env | grep -E 'COLOUR|SPEED'; sleep 3600"
+COLOUR=red
+SPEED=fast
+Launch a new Pod named redfastcar in the same ca200 namespace, using the image busybox. The redfastcar pod should expose the previous ConfigMap settings as environment variables inside the container. Configure the redfastcar pod to run the command:  /bin/sh -c "env | grep -E 'COLOUR|SPEED'; sleep 3600"
 
 **Solution**
 
